@@ -1,1 +1,213 @@
-müködik
+<!doctype html>
+<html>
+<head>
+    <title>6/a Éve elei Ismétlés</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    body {
+        background-color: #f0f0f2;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        
+    }
+    div {
+        width: 600px;
+        margin: 5em auto;
+        padding: 2em;
+        background-color: #fdfdff;
+        border-radius: 0.5em;
+        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);
+    }
+    a:link, a:visited {
+        color: #38488f;
+        text-decoration: none;
+    }
+    @media (max-width: 700px) {
+        div {
+            margin: 0 auto;
+            width: auto;
+        }
+    }
+    </style>    
+</head>
+
+<body>
+<div id="quiz-container">
+    <h1>6/a Éve elei Ismétlés</h1>
+    <p>Quíz Készítője: Kökai Balázs
+        A Kvíz Inditásához nyomd meg a Start Gombot!
+    </p>
+    <button onclick="startQuiz()" id="start-quiz">Start</button>
+</div>
+
+<script>
+// JavaScript kód itt
+let currentQuestionIndex = 0;
+let score = 0;
+let incorrectAnswers = [];
+
+// Kérdések és válaszok tömbje
+const questions = [
+    {
+        question: "Mennyi: 58-|(-96)-41|=",
+        answers: ["79", "-79", "55", "-69"],
+        correctIndex: 1
+    },
+    {
+        question: "Mi a zárojelbetett számnak a valódi értéke? Szám: 3465(9)23",
+        answers: ["90", "9000", "9", "900"],
+        correctIndex: 3
+    },
+    {
+        question: "Mi a zárojelbetett számnak a alaki értéke? Szám: (3)465923",
+        answers: ["300", "3", "3000000", "300000000"],
+        correctIndex: 2
+    },
+    {
+        question: "Mi a zárojelbetett számnak a helyi értéke? Szám: 3(4)65923",
+        answers: ["százas", "tízezres", "százezres", "millió"],
+        correctIndex: 2
+    },
+    {
+        question: "Hogyan jelölik a tízezrest mint helyi érték?",
+        answers: ["tízezres", "T", "t", "Tí"],
+        correctIndex: 1
+    },
+    {
+        question: "Hogyan írják helyesen a: 582675-t?",
+        answers: ["ötszáznyolcvankettőezerhatszázhetvenöt", "ötszáznyolcvankettő-ezerhatszázhetvenöt", "ötszáznyolcvankettő-hatszázhetvenöt", "ötszáznyolcvankettőezer-hatszázhetvenöt"],
+        correctIndex: 3
+    },
+    {
+        question: "Mennyi a 37456:32=?",
+        answers: ["5574,5", "1170,5", "1170", "6093"],
+        correctIndex: 1
+    },
+    {
+        question: "Mennyi a 1253,45 x 10=?",
+        answers: ["1253", "12534,5", "125345", "Nem Lehet a tizedes törtet megszorozni!"],
+        correctIndex: 1
+    },
+    {
+        question: "Mennyi a 1253,45 : 10=?",
+        answers: ["1253", "12534,5", "125,345", "Nem Lehet a tizedes törtet osztani!"],
+        correctIndex: 2
+    },
+    {
+        question: "Hogy van helyesen a műveleti sorrend?",
+        answers: ["1. +, - | 2. x, : | 3. (,)", "1. x, : | 2. +, - | 3. (,)", "1. (,) | 2. x, : | 3. +, -", "1. (,) | 2. +, - | 3. x, :"],
+        correctIndex: 2
+    },
+    // Ide írd a további kérdéseket
+];
+
+function startQuiz() {
+    const quizContainer = document.getElementById("quiz-container");
+    const startButton = document.getElementById("start-quiz");
+
+    // Elrejtjük a start gombot
+    startButton.style.display = "none";
+
+    // Töröljük a kezdeti tartalmat
+    while (quizContainer.firstChild) {
+        quizContainer.removeChild(quizContainer.firstChild);
+    }
+
+    // Kirajzoljuk az első kérdést
+    displayQuestion();
+}
+
+
+function displayQuestion() {
+    const quizContainer = document.getElementById("quiz-container");
+    const currentQuestion = questions[currentQuestionIndex];
+
+    if (currentQuestionIndex < questions.length) {
+        // Létrehozzuk a kérdés elemeket
+        const questionElement = document.createElement("h2");
+        questionElement.textContent = currentQuestion.question;
+        quizContainer.appendChild(questionElement);
+
+        for (let i = 0; i < currentQuestion.answers.length; i++) {
+            const answerElement = document.createElement("input");
+            answerElement.type = "radio";
+            answerElement.name = "answer";
+            answerElement.value = i;
+            quizContainer.appendChild(answerElement);
+
+            const labelElement = document.createElement("label");
+            labelElement.textContent = currentQuestion.answers[i];
+            quizContainer.appendChild(labelElement);
+        }
+
+        // Létrehozzuk az ellenőrzés gombot
+        const checkButton = document.createElement("button");
+        checkButton.textContent = "Ellenőrzés";
+        checkButton.addEventListener("click", checkAnswer);
+        quizContainer.appendChild(checkButton);
+    } else {
+        // Ha nincs több kérdés, akkor megjelenítjük az eredményt és a hibás válaszokat
+        showResult();
+    }
+}
+
+function checkAnswer() {
+    const selectedAnswerIndex = document.querySelector("input[name='answer']:checked");
+    
+    if (!selectedAnswerIndex) {
+        alert("Válassz egy választ!");
+        return;
+    }
+
+    const correctIndex = questions[currentQuestionIndex].correctIndex;
+    const userAnswerIndex = parseInt(selectedAnswerIndex.value);
+
+    if (userAnswerIndex === correctIndex) {
+        score++;
+    } else {
+        // Hozzáadjuk a hibás választ az incorrectAnswers tömbhöz
+        incorrectAnswers.push({
+            question: questions[currentQuestionIndex].question,
+            correctAnswer: questions[currentQuestionIndex].answers[correctIndex]
+        });
+    }
+
+    currentQuestionIndex++;
+    clearQuizContainer();
+    displayQuestion();
+}
+
+function clearQuizContainer() {
+    const quizContainer = document.getElementById("quiz-container");
+    while (quizContainer.firstChild) {
+        quizContainer.removeChild(quizContainer.firstChild);
+    }
+}
+
+function showResult() {
+    const quizContainer = document.getElementById("quiz-container");
+    const resultElement = document.createElement("p");
+    resultElement.textContent = `Eredmény: ${score}/${questions.length} helyes válasz`;
+    quizContainer.appendChild(resultElement);
+
+    // Ha vannak hibás válaszok, megjelenítjük azokat
+    if (incorrectAnswers.length > 0) {
+        const incorrectAnswersElement = document.createElement("p");
+        incorrectAnswersElement.textContent = "Hibás válaszok:";
+        quizContainer.appendChild(incorrectAnswersElement);
+
+        for (const incorrectAnswer of incorrectAnswers) {
+            const incorrectAnswerElement = document.createElement("p");
+            incorrectAnswerElement.textContent = `${incorrectAnswer.question} - Helyes válasz: ${incorrectAnswer.correctAnswer}`;
+            quizContainer.appendChild(incorrectAnswerElement);
+        }
+    }
+}
+
+</script>
+</body>
+</html>
