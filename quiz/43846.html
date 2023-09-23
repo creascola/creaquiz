@@ -105,6 +105,7 @@ const questions = [
     // Ide írd a további kérdéseket
 ];
 
+
 function startQuiz() {
     const quizContainer = document.getElementById("quiz-container");
     const startButton = document.getElementById("start-quiz");
@@ -169,9 +170,10 @@ function checkAnswer() {
     if (userAnswerIndex === correctIndex) {
         score++;
     } else {
-        // Hozzáadjuk a hibás választ az incorrectAnswers tömbhöz
+        // Hozzáadjuk a hibás választ az incorrectAnswers tömbhöz, beleértve a felhasználó válaszát is
         incorrectAnswers.push({
             question: questions[currentQuestionIndex].question,
+            userAnswer: questions[currentQuestionIndex].answers[userAnswerIndex],
             correctAnswer: questions[currentQuestionIndex].answers[correctIndex]
         });
     }
@@ -202,7 +204,7 @@ function showResult() {
 
         for (const incorrectAnswer of incorrectAnswers) {
             const incorrectAnswerElement = document.createElement("p");
-            incorrectAnswerElement.textContent = `${incorrectAnswer.question} - Helyes válasz: ${incorrectAnswer.correctAnswer}`;
+            incorrectAnswerElement.textContent = `${incorrectAnswer.question} - Helyes válasz: ${incorrectAnswer.correctAnswer}, Te választottad: ${incorrectAnswer.userAnswer}`;
             quizContainer.appendChild(incorrectAnswerElement);
         }
     }
