@@ -98,7 +98,7 @@ input[type=code] {
   fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`)
     .then(response => {
       if (response.status === 200) {
-        window.location.href(`https://creascola.github.io/creaquiz/quiz/${codeid}.html`)
+        window.open(`https://creascola.github.io/creaquiz/quiz/${codeid}.html`, "-self")
       } else if (response.status === 404) {
         alert("Nem Létezik ilyen Kvíz!")
       } else {
