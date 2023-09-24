@@ -92,21 +92,21 @@ input[type=code] {
     }
  function checkcode() {
   const owner = 'creascola';
-  const repo = 'quiz';
+  const repo = 'creaquiz';
   const filePath = `quiz/${codeid}.html`;
 
   fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`)
     .then(response => {
       if (response.status === 200) {
-        window.open(`https://creascola.github.io/quiz/quiz/${codeid}.html`)
+        window.open(`https://creascola.github.io/creaquiz/quiz/${codeid}.html`)
       } else if (response.status === 404) {
         alert("Nem Létezik ilyen Kvíz!")
       } else {
-        alert("Hiba!")
+        alert("Hibatörtént A Betöltés Során! Próbáld meg Később!")
       }
     })
     .catch(error => {
-        alert("hiba!")
+        alert("Hibatörtént A Betöltés Során! Próbáld meg Később!")
     });
 }
 
