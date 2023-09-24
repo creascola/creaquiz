@@ -84,8 +84,18 @@ const questions = [
     },
     {
         question: "Mennyi a 37456:32=?",
-        answers: ["5574,5", "1170,5", "1170", "6093"],
+        answers: ["5574 Maradék: 4", "1170 Maradék: 16", "1170 Maradék: 2", "6093 Maradék: 56"],
         correctIndex: 1
+    },
+    {
+        question: "Mennyi a 47302 x 10=?",
+        answers: ["53285,2", "42842", "4730", "473020"],
+        correctIndex: 3
+    },
+    {
+        question: "Mennyi a 49820 : 10=?",
+        answers: ["4293", "498200", "4982", "482,5"],
+        correctIndex: 2
     },
     {
         question: "Mennyi a 1253,45 x 10=?",
@@ -134,20 +144,24 @@ function displayQuestion() {
         quizContainer.appendChild(questionElement);
 
         for (let i = 0; i < currentQuestion.answers.length; i++) {
-            const answerElement = document.createElement("input");
-            answerElement.type = "radio";
-            answerElement.name = "answer";
-            answerElement.value = i;
-            quizContainer.appendChild(answerElement);
+    const answerElement = document.createElement("input");
+    answerElement.type = "radio";
+    answerElement.name = "answer";
+    answerElement.value = i;
+    quizContainer.appendChild(answerElement);
 
-            const labelElement = document.createElement("label");
-            labelElement.textContent = currentQuestion.answers[i];
-            quizContainer.appendChild(labelElement);
-        }
+    const labelElement = document.createElement("label");
+    labelElement.textContent = currentQuestion.answers[i];
+    quizContainer.appendChild(labelElement);
+
+    // Hozzáadunk egy új sort (<br>) a válaszok közé
+    quizContainer.appendChild(document.createElement("br"));
+}
+
 
         // Létrehozzuk az ellenőrzés gombot
         const checkButton = document.createElement("button");
-        checkButton.textContent = "Ellenőrzés";
+        checkButton.textContent = "Következő";
         checkButton.addEventListener("click", checkAnswer);
         quizContainer.appendChild(checkButton);
     } else {
